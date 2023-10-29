@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import { InputProps } from "./Input";
 
 export default function useInputController(props: InputProps) {
