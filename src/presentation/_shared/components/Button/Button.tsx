@@ -6,5 +6,5 @@ export interface ButtonProps {}
 export default function Button(props: ButtonProps) {
   const { handleClick } = useButtonController(props);
 
-  return <Button onClick={(e) => handleClick()}>Button</Button>;
+  return <button onClick={(e) => handleClick()}>Button</button>;
 }
