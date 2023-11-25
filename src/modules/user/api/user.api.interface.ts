@@ -1,9 +1,10 @@
-import { IUser, IUserServerData } from "../dto/user.dto.interface";
+import { UserLoginData, UserSignupData } from ".";
+import { UserServerData } from "../user.type";
 
 export interface IUserAPIService {
-  signup(data: IUserServerData): Promise<IUserServerData>;
-  login(data: IUserServerData): Promise<IUserServerData>;
-  getProfile(): Promise<IUserServerData>;
-  updateProfile(data: Partial<IUserServerData>): IUserServerData;
+  signup(data: UserSignupData): Promise<UserServerData>;
+  login(data: UserLoginData): Promise<UserServerData>;
+  getProfile(): Promise<UserServerData>;
+  updateProfile(data: Partial<UserServerData>): Promise<UserServerData>;
   deleteProfile(): Promise<boolean>;
 }

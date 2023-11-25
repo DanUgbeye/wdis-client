@@ -1,22 +1,22 @@
 import { IPersistentStorage } from "@/global-utils/persistent-storage";
-import { UserServerData } from "../user.type";
+import { AuthServerData } from "../user.type";
 
-export class UserStorage {
+export class AuthStorage {
   private storage: IPersistentStorage;
-  private storageKey = "USER";
+  private storageKey = "AUTH";
 
   constructor(persistentStorage: IPersistentStorage) {
     this.storage = persistentStorage;
   }
 
-  save(data: UserServerData | null): void {
+  save(data: AuthServerData | null): void {
     this.storage.save(this.storageKey, data);
   }
 
-  get(): UserServerData | null {
+  get(): AuthServerData | null {
     const data = this.storage.retrieve(this.storageKey);
     // validate here
-    return data as UserServerData | null;
+    return data as AuthServerData | null;
   }
 
   delete(): void {
