@@ -4,12 +4,11 @@ import { twMerge } from "tailwind-merge";
 import Spinner from "../Spinner";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string;
   loading?: boolean;
 }
 
 export default function Button(props: ButtonProps) {
-  const { text, loading, className, ...rest } = props;
+  const { children, loading, className, ...rest } = props;
 
   return (
     <button
@@ -22,7 +21,7 @@ export default function Button(props: ButtonProps) {
         className
       )}
     >
-      {loading ? <Spinner /> : text}
+      {loading ? <Spinner /> : children}
     </button>
   );
 }
