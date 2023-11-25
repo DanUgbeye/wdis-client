@@ -1,17 +1,18 @@
 import { AxiosRequestConfig } from "axios";
 
 export type ApiSuccessResponse<T = any> = {
-  status: number;
+  code: number;
   message: string;
-  result: T;
-  data?: boolean;
+  data: T;
+  success: true;
 };
 
-export type ApiErrorResponse<T = any> = {
-  status: number;
+export type ApiErrorResponse<T = undefined> = {
+  code: number;
   message: string;
-  result: T | null;
-  data?: boolean;
+  type: string;
+  errors: T;
+  success: false;
 };
 
 export interface RequestOptions extends AxiosRequestConfig<any> {}

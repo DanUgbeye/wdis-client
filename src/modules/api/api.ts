@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosInstance } from "axios";
 import { ApiErrorResponse } from "./api.types";
 import APP_CONFIG from "@/modules/app/config/app.config";
 
-class ApiService {
+export class ApiService {
   private static instance: ApiService | null;
   public axios: AxiosInstance;
   private token: string;
@@ -12,6 +12,7 @@ class ApiService {
     if (ApiService.instance) {
       throw new Error("ApiService Instance already exists");
     }
+
     const { API_BASE_URL } = APP_CONFIG;
     this.baseUrl = `${API_BASE_URL}/v1`;
 
@@ -65,12 +66,14 @@ class ApiService {
 
   static getInstance() {
     if (!ApiService.instance) {
-      return new ApiService();
+      const newInstance = new ApiService();
+      ApiService.instance = newInstance;
+      return newInstance;
     }
+
     return ApiService.instance;
   }
 }
 
 const apiService = ApiService.getInstance();
-
 export default apiService;
