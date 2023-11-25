@@ -9,6 +9,11 @@ import { ToastContainer } from "react-toastify";
 import "./globals.css";
 import "nprogress/nprogress.css";
 import "react-toastify/dist/ReactToastify.min.css";
+import {
+  AuthContextProvider,
+  UserContextProvider,
+} from "@/presentation/features/user/context";
+import { BinContextProvider } from "@/presentation/features/bin/context";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -37,15 +42,21 @@ export default function RootLayout(props: RootLayoutProps) {
 
       <body className={""}>
         <QueryClientProvider client={queryClient}>
-          <ToastContainer
-            position="top-center"
-            autoClose={2000}
-            newestOnTop={false}
-            theme="colored"
-            hideProgressBar
-          />
+          <AuthContextProvider>
+            <UserContextProvider>
+              <BinContextProvider>
+                <ToastContainer
+                  position="top-center"
+                  autoClose={2000}
+                  newestOnTop={false}
+                  theme="colored"
+                  hideProgressBar
+                />
 
-          {children}
+                {children}
+              </BinContextProvider>
+            </UserContextProvider>
+          </AuthContextProvider>
         </QueryClientProvider>
       </body>
     </html>

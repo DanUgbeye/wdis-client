@@ -7,8 +7,15 @@ import Select from "@/presentation/_shared/components/Select";
 import { Formik } from "formik";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import useAuth from "@/presentation/features/user/hooks/useAuth.hook";
+import useUser from "@/presentation/features/user/hooks/useUser.hook";
 
 export default function UserSignup() {
+  const router = useRouter();
+  const { auth, saveAuth, logout } = useAuth();
+  const { saveUser } = useUser();
+
   const initialValues: {
     fullname: string;
     email: string;
@@ -22,6 +29,14 @@ export default function UserSignup() {
     phoneNumber: "",
     sex: "",
   };
+
+  React.useEffect(() => {
+    if (auth) {
+      router.replace("/dashboard");
+      toast.success("LOGIN SESSION AVAILABLE", { toastId: "login-session" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className=" min-h-screen bg-gradient-to-br from-fuchsia-800 via-purple-800 to-violet-800 ">
@@ -126,8 +141,9 @@ export default function UserSignup() {
                   type="submit"
                   loading={isSubmitting}
                   disabled={isSubmitting}
-                  text={"Signup"}
-                />
+                >
+                  Signup
+                </Button>
               </form>
             </>
           )}

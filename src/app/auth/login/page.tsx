@@ -1,24 +1,32 @@
 "use client";
-import ApiService from "@/modules/api/api";
+import apiService from "@/modules/api/api";
 import { UserAPIService, UserLoginData } from "@/modules/user/api";
 import { USER_ROLES } from "@/modules/user/user.type";
 import Button from "@/presentation/_shared/components/Button";
 import { Container } from "@/presentation/_shared/components/Container";
 import Input from "@/presentation/_shared/components/Input";
+import useAuth from "@/presentation/features/user/hooks/useAuth.hook";
+import useUser from "@/presentation/features/user/hooks/useUser.hook";
 import { Formik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 
 export default function UserLogin() {
+  const router = useRouter();
+  const { auth, saveAuth } = useAuth();
+  const { saveUser } = useUser();
+
   const initialValues: UserLoginData = {
     email: "",
     password: "",
   };
 
   async function handleSubmit(data: UserLoginData) {
-    const userApi = new UserAPIService(ApiService.getInstance());
+    const userApi = new UserAPIService(apiService);
     let res;
+
     try {
       res = await userApi.login(USER_ROLES.USER, data);
     } catch (err: any) {
@@ -26,8 +34,21 @@ export default function UserLogin() {
       return;
     }
 
-    console.log(res);
+    saveAuth({ ...res.auth, role: USER_ROLES.USER });
+    saveUser(res.user);
+    router.replace("/dashboard");
+
+    toast.success("LOGIN SUCCESSFUL");
   }
+
+  React.useEffect(() => {
+    if (auth) {
+      router.replace("/dashboard");
+
+      toast.success("LOGIN SESSION AVAILABLE", { toastId: "login-session" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className=" min-h-screen bg-gradient-to-br from-fuchsia-800 via-purple-800 to-violet-800 ">
@@ -93,8 +114,9 @@ export default function UserLogin() {
                   type="submit"
                   loading={isSubmitting}
                   disabled={isSubmitting}
-                  text={"Login"}
-                />
+                >
+                  Login
+                </Button>
               </form>
             </>
           )}

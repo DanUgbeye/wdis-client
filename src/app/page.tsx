@@ -7,9 +7,9 @@ export default function HomePage() {
   return (
     <main className=" block min-h-screen bg-gradient-to-br from-fuchsia-800 via-purple-800 to-violet-800 ">
       <Container className="  ">
-        <div className=" mb-12 flex flex-col gap-y-2 py-12 text-center font-bold uppercase leading-relaxed text-white ">
-          <h1 className=" text-2xl ">University of Calabar</h1>
-          <h2 className=" text-4xl ">Waste Disposal Application</h2>
+        <div className=" mb-12 flex flex-col gap-y-2 py-12 text-center uppercase leading-relaxed text-white ">
+          <h1 className=" text-xl ">University of Calabar</h1>
+          <h2 className=" font-bold text-4xl ">Waste Disposal Application</h2>
         </div>
 
         <div className=" mx-auto w-full max-w-sm rounded-lg bg-white px-6 py-16 sm:px-12 ">

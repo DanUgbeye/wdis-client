@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import ApiService from "@/modules/api/api";
+import apiService from "@/modules/api/api";
 import { UserAPIService, UserLoginData } from "@/modules/user/api";
 import { USER_ROLES } from "@/modules/user/user.type";
 import Button from "@/presentation/_shared/components/Button";
@@ -9,17 +9,24 @@ import Input from "@/presentation/_shared/components/Input";
 import { Formik } from "formik";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import useAuth from "@/presentation/features/user/hooks/useAuth.hook";
+import useUser from "@/presentation/features/user/hooks/useUser.hook";
+import { useRouter } from "next/navigation";
 
 export default function DisposerLogin() {
+  const router = useRouter();
+  const { auth, saveAuth } = useAuth();
+  const { saveUser } = useUser();
+
   const initialValues: UserLoginData = {
     email: "",
     password: "",
   };
 
   async function handleSubmit(data: UserLoginData) {
-    const userApi = new UserAPIService(ApiService.getInstance());
+    const userApi = new UserAPIService(apiService);
     let res;
-    
+
     try {
       res = await userApi.login(USER_ROLES.DISPOSER, data);
     } catch (err: any) {
@@ -27,9 +34,21 @@ export default function DisposerLogin() {
       return;
     }
 
-    console.log(res);
+    saveAuth({ ...res.auth, role: USER_ROLES.DISPOSER });
+    saveUser(res.user);
+    router.replace("/dashboard");
+
     toast.success("LOGIN SUCCESSFUL");
   }
+
+  React.useEffect(() => {
+    if (auth) {
+      router.replace("/dashboard");
+
+      toast.success("LOGIN SESSION AVAILABLE", { toastId: "login-session" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className=" min-h-screen bg-gradient-to-br from-fuchsia-800 via-purple-800 to-violet-800 ">
@@ -44,10 +63,6 @@ export default function DisposerLogin() {
           validateOnChange={false}
           validateOnBlur={true}
           onSubmit={async (values, { setSubmitting }) => {
-            // if(!values.email || !values.password) {
-
-            // }
-            console.log(values);
             await handleSubmit(values);
             setSubmitting(false);
           }}
@@ -98,8 +113,9 @@ export default function DisposerLogin() {
                   type="submit"
                   loading={isSubmitting}
                   disabled={isSubmitting}
-                  text={"Login"}
-                />
+                >
+                  Login
+                </Button>
               </form>
             </>
           )}
