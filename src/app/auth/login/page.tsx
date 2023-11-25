@@ -1,16 +1,33 @@
 "use client";
+import ApiService from "@/modules/api/api";
+import { UserAPIService, UserLoginData } from "@/modules/user/api";
+import { USER_ROLES } from "@/modules/user/user.type";
 import Button from "@/presentation/_shared/components/Button";
 import { Container } from "@/presentation/_shared/components/Container";
 import Input from "@/presentation/_shared/components/Input";
 import { Formik } from "formik";
 import Link from "next/link";
 import React from "react";
+import { toast } from "react-toastify";
 
 export default function UserLogin() {
-  const initialValues: { email: string; password: string } = {
+  const initialValues: UserLoginData = {
     email: "",
     password: "",
   };
+
+  async function handleSubmit(data: UserLoginData) {
+    const userApi = new UserAPIService(ApiService.getInstance());
+    let res;
+    try {
+      res = await userApi.login(USER_ROLES.USER, data);
+    } catch (err: any) {
+      toast.error(err.message);
+      return;
+    }
+
+    console.log(res);
+  }
 
   return (
     <main className=" min-h-screen bg-gradient-to-br from-fuchsia-800 via-purple-800 to-violet-800 ">
@@ -24,11 +41,9 @@ export default function UserLogin() {
           // validationSchema={loginSchema}
           validateOnChange={false}
           validateOnBlur={true}
-          onSubmit={(values, { setSubmitting }) => {
-            // if(!values.email || !values.password) {
-
-            // }
+          onSubmit={async (values, { setSubmitting }) => {
             console.log(values);
+            await handleSubmit(values);
             setSubmitting(false);
           }}
         >

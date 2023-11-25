@@ -15,14 +15,14 @@ export default function HomePage() {
         <div className=" mx-auto w-full max-w-sm rounded-lg bg-white px-6 py-16 sm:px-12 ">
           <div className=" flex w-full flex-col gap-y-8 ">
             <Link
-              href={"/login"}
+              href={"/auth/login"}
               className=" grid h-14 place-items-center rounded-md border-2 border-violet-700 px-3 text-violet-700 hover:border-violet-700 hover:bg-violet-700 hover:text-white "
             >
               Login as User
             </Link>
 
             <Link
-              href={"/disposer/login"}
+              href={"/auth/disposer-login"}
               className=" grid h-14 place-items-center rounded-md border-2 border-violet-700 px-3 text-violet-700 hover:border-violet-700 hover:bg-violet-700 hover:text-white "
             >
               Login as Disposer
@@ -32,7 +32,7 @@ export default function HomePage() {
 
         <div className=" mt-12 ">
           <Link
-            href={"/signup"}
+            href={"/auth/signup"}
             className=" h-14 text-white hover:underline hover:underline-offset-4 "
           >
             signup ?
