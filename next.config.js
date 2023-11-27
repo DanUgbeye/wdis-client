@@ -2,10 +2,6 @@
 
 const nextConfig = {
   reactStrictMode: true,
-  i18n,
-  publicRuntimeConfig: {
-    API_BASEURL: process.env.API_BASEURL,
-  },
   images: {
     remotePatterns: [
       {
