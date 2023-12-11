@@ -38,7 +38,7 @@ function DashboardPage() {
                 <div className=" my-12 ">
                   <div className=" text-3xl mb-8 ">BINS</div>
 
-                  <div className=" grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-8 ">
+                  <div className=" grid grid-cols-[repeat(auto-fill,minmax(23rem,1fr))] gap-8 ">
                     <Mapper
                       id="all-bins"
                       list={bins}

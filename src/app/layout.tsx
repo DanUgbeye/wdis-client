@@ -1,23 +1,16 @@
 "use client";
-import { Router } from "next/router";
 import Head from "next/head";
-import NProgress from "nprogress";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 
 // CSS FILES
 import "./globals.css";
-import "nprogress/nprogress.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import {
   AuthContextProvider,
   UserContextProvider,
 } from "@/presentation/features/user/context";
 import { BinContextProvider } from "@/presentation/features/bin/context";
-
-Router.events.on("routeChangeStart", () => NProgress.start());
-Router.events.on("routeChangeComplete", () => NProgress.done());
-Router.events.on("routeChangeError", () => NProgress.done());
 
 const queryClient = new QueryClient();
 

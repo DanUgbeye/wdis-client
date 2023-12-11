@@ -6,11 +6,16 @@ export const BIN_STATUS = {
   IN_DISPOSAL: "in-disposal",
 } as const;
 
-export interface BinData {
+export type BinData = {
   _id: string;
   name: string;
   location: string;
   status: BinStatus;
   createdAt: Date;
   updatedAt: Date;
-}
+};
+
+export type NewBin = {
+  name: string;
+  location: string;
+};

@@ -63,7 +63,6 @@ export default function UserLogin() {
           validateOnChange={false}
           validateOnBlur={true}
           onSubmit={async (values, { setSubmitting }) => {
-            console.log(values);
             await handleSubmit(values);
             setSubmitting(false);
           }}
