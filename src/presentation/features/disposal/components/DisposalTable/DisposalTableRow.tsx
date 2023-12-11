@@ -1,3 +1,4 @@
+"use client";
 import dateUtils from "@/global-utils/date-utils";
 import {
   DISPOSAL_STATUS,

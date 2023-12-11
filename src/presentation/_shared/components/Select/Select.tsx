@@ -1,4 +1,5 @@
-import React, { SelectHTMLAttributes, PropsWithChildren } from "react";
+"use client";
+import React, { SelectHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 import { SelectOption } from "./Select.types";
 import Mapper from "../Mapper";

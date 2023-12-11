@@ -1,4 +1,4 @@
-import { Container } from "@/presentation/_shared/components/Container";
+"use client";
 import React from "react";
 import { HiTrash } from "react-icons/hi2";
 import NavLink from "./NavLink";

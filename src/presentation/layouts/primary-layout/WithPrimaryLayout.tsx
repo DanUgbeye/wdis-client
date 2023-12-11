@@ -1,3 +1,4 @@
+"use client";
 import React, { ComponentType } from "react";
 import PrimaryLayout, { PrimaryLayoutProps } from "./PrimaryLayout";
 

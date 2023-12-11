@@ -1,3 +1,4 @@
+"use client";
 import { Container } from "@/presentation/_shared/components/Container";
 import Navbar from "@/presentation/_shared/components/Navbar/Navbar";
 import React, { PropsWithChildren } from "react";

@@ -1,3 +1,4 @@
+"use client";
 import Link, { LinkProps } from "next/link";
 import React, { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";

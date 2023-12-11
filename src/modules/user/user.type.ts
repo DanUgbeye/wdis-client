@@ -7,6 +7,7 @@ export const USER_ROLES = {
 export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
 
 export interface UserServerData {
+  _id: string;
   email: string;
   fullname: string;
   password?: string;

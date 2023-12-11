@@ -1,3 +1,4 @@
+"use client";
 import { BIN_STATUS, BinData } from "@/modules/bin/bin.types";
 import Link from "next/link";
 import React from "react";
@@ -11,6 +12,7 @@ import apiService from "@/modules/api/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import Button from "@/presentation/_shared/components/Button";
+import useReport from "@/presentation/features/report/hooks/useReport.hook";
 
 export interface BinCardProps {
   bin: BinData;
@@ -19,18 +21,20 @@ export interface BinCardProps {
 
 export default function BinCard(props: BinCardProps) {
   const binService = new BinAPIService(apiService);
+  const reportService = useReport();
   const { bin, onStatusChange } = props;
   const { user } = useUser();
   const queryClient = useQueryClient();
-  const QUERY_KEY = "ALL_BINS";
-  const QUERY_KEY_2 = "BIN";
+  const QUERY_KEY = `BIN_${bin._id}`;
 
+  const reportCount = reportService.getReportsForBin(bin._id);
   const [binStatusLoading, setBinStatusLoading] = React.useState(false);
 
   async function handleMarkBinAsEmpty(bin: BinData) {
     setBinStatusLoading(true);
     try {
       await binService.markBinAsEmpty(bin._id);
+      reportService.markBinAsEmpty(bin._id);
     } catch (error: any) {
       setBinStatusLoading(false);
       return toast.error(error.message, {
@@ -40,7 +44,6 @@ export default function BinCard(props: BinCardProps) {
     onStatusChange && onStatusChange(bin);
     toast.success("bin status updated", { toastId: `empty-bin-${bin._id}` });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEY_2] });
     setBinStatusLoading(false);
   }
 
@@ -48,6 +51,7 @@ export default function BinCard(props: BinCardProps) {
     setBinStatusLoading(true);
     try {
       await binService.markBinAsInDisposal(bin._id);
+      reportService.markBinAsInDisposal(bin._id);
     } catch (error: any) {
       setBinStatusLoading(false);
       return toast.error(error.message, {
@@ -59,7 +63,13 @@ export default function BinCard(props: BinCardProps) {
       toastId: `in-dispoasl-bin-${bin._id}`,
     });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEY_2] });
+    setBinStatusLoading(false);
+  }
+
+  function handleReportBinASFull(bin: BinData) {
+    setBinStatusLoading(true);
+    const status = reportService.reportBin(bin._id);
+    status ? toast.success("report sent") : toast.error("failed to send");
     setBinStatusLoading(false);
   }
 
@@ -73,8 +83,9 @@ export default function BinCard(props: BinCardProps) {
                 className={twMerge(
                   " h-[10rem] w-[10rem] ",
                   bin.status === BIN_STATUS.EMPTY && " text-green-500 ",
-                  bin.status === BIN_STATUS.FULL && " text-red-600 ",
-                  bin.status === BIN_STATUS.IN_DISPOSAL && " text-amber-500 "
+                  bin.status === BIN_STATUS.IN_DISPOSAL && " text-amber-500 ",
+                  (bin.status === BIN_STATUS.FULL || reportCount > 0) &&
+                    " text-red-600 "
                 )}
               />
             </div>
@@ -104,8 +115,9 @@ export default function BinCard(props: BinCardProps) {
                   className={twMerge(
                     " -mr-4 w-fit self-end rounded-l-2xl p-3 text-right ",
                     bin.status === BIN_STATUS.EMPTY && " bg-green-500 ",
-                    bin.status === BIN_STATUS.FULL && " bg-red-500 ",
-                    bin.status === BIN_STATUS.IN_DISPOSAL && " bg-amber-500 "
+                    bin.status === BIN_STATUS.IN_DISPOSAL && " bg-amber-500 ",
+                    (bin.status === BIN_STATUS.FULL || reportCount > 0) &&
+                      " bg-red-500 "
                   )}
                 >
                   {bin.status}
@@ -162,14 +174,15 @@ export default function BinCard(props: BinCardProps) {
 
             {user.role === USER_ROLES.USER && (
               <>
-                <button
-                  disabled={bin.status === BIN_STATUS.EMPTY}
+                <Button
+                  disabled={bin.status !== BIN_STATUS.EMPTY}
+                  loading={binStatusLoading}
                   type="button"
-                  onClick={(e) => {}}
+                  onClick={(e) => handleReportBinASFull(bin)}
                   className=" h-14 w-full rounded-lg bg-red-500 text-lg text-white transition-all duration-300 hover:bg-red-600 disabled:bg-red-800 disabled:text-white/40 disabled:hover:bg-red-800 "
                 >
                   REPORT
-                </button>
+                </Button>
 
                 <Link
                   href={`/bins/${bin._id}`}

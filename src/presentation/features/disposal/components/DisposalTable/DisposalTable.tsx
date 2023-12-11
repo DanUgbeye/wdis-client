@@ -1,3 +1,4 @@
+"use client";
 import { DisposalData } from "@/modules/disposal/disposal.types";
 import Mapper from "@/presentation/_shared/components/Mapper";
 import React from "react";

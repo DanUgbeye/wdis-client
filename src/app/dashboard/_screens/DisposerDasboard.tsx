@@ -1,3 +1,4 @@
+"use client";
 import apiService from "@/modules/api/api";
 import { AppAPIService, AppStats } from "@/modules/app/api";
 import ErrorCard from "@/presentation/_shared/components/ErrorCard";

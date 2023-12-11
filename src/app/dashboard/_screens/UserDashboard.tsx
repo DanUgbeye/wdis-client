@@ -1,3 +1,4 @@
+"use client";
 import ErrorCard from "@/presentation/_shared/components/ErrorCard";
 import Mapper from "@/presentation/_shared/components/Mapper";
 import Spinner from "@/presentation/_shared/components/Spinner";
@@ -13,7 +14,7 @@ export default function UserDashboard() {
   return user ? (
     <div className="  ">
       <div className="  ">
-        <div className=" text-3xl font-bold mb-3 ">WELCOME {user.fullname}</div>
+        <div className=" mb-3 text-3xl font-bold ">WELCOME {user.fullname}</div>
         <div className=" text-2xl ">Kindly report any full bin around you</div>
       </div>
 

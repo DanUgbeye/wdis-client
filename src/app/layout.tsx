@@ -11,6 +11,7 @@ import {
   UserContextProvider,
 } from "@/presentation/features/user/context";
 import { BinContextProvider } from "@/presentation/features/bin/context";
+import ReportContextprovider from "@/presentation/features/report/context";
 
 const queryClient = new QueryClient();
 
@@ -38,15 +39,17 @@ export default function RootLayout(props: RootLayoutProps) {
           <AuthContextProvider>
             <UserContextProvider>
               <BinContextProvider>
-                <ToastContainer
-                  position="top-center"
-                  autoClose={2000}
-                  newestOnTop={false}
-                  theme="colored"
-                  hideProgressBar
-                />
+                <ReportContextprovider>
+                  <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    newestOnTop={false}
+                    theme="colored"
+                    hideProgressBar
+                  />
 
-                {children}
+                  {children}
+                </ReportContextprovider>
               </BinContextProvider>
             </UserContextProvider>
           </AuthContextProvider>

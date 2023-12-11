@@ -1,3 +1,4 @@
+"use client";
 import React, { HTMLAttributes } from "react";
 import { CgSpinnerTwoAlt } from "react-icons/cg";
 import { twMerge } from "tailwind-merge";

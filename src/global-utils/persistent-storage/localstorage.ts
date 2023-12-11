@@ -1,3 +1,4 @@
+"use client";
 import { IPersistentStorage } from "./persistent-storage.interface";
 
 export class LocalStorage implements IPersistentStorage {

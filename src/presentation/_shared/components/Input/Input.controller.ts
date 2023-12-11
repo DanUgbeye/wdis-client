@@ -1,4 +1,5 @@
-import React, { InputHTMLAttributes } from "react";
+"use client";
+import React from "react";
 import { InputProps } from "./Input";
 
 export default function useInputController(props: InputProps) {
