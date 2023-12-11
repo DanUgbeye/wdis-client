@@ -1,3 +1,4 @@
+import { Container } from "@/presentation/_shared/components/Container";
 import Navbar from "@/presentation/_shared/components/Navbar/Navbar";
 import React, { PropsWithChildren } from "react";
 import { twMerge } from "tailwind-merge";
@@ -10,8 +11,10 @@ function PrimaryLayout(props: PrimaryLayoutProps) {
   const { children, className } = props;
 
   return (
-    <div className={twMerge(" min-h-[100vh] h-full w-full ", className || "")}>
-      <Navbar />
+    <div className={twMerge(" h-full min-h-[100vh] w-full ", className || "")}>
+      <Container className=" mb-12 ">
+        <Navbar />
+      </Container>
 
       {children}
     </div>

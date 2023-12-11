@@ -1,33 +1,20 @@
 "use client";
-import apiService from "@/modules/api/api";
-import { BinAPIService } from "@/modules/bin/api";
-import { BinData } from "@/modules/bin/bin.types";
 import { USER_ROLES } from "@/modules/user/user.type";
 import { Container } from "@/presentation/_shared/components/Container";
+import ErrorCard from "@/presentation/_shared/components/ErrorCard";
 import Mapper from "@/presentation/_shared/components/Mapper";
 import Spinner from "@/presentation/_shared/components/Spinner";
 import BinCard from "@/presentation/features/bin/components/BinCard";
+import useBins from "@/presentation/features/bin/hooks/useBins.hook";
 import useUser from "@/presentation/features/user/hooks/useUser.hook";
 import WithPrimaryLayout from "@/presentation/layouts/primary-layout/WithPrimaryLayout";
 import WithOnProtectedRoute from "@/presentation/layouts/protected-route/WithProtectedRoute";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React from "react";
 
 function AllBinsPage() {
-  const binService = new BinAPIService(apiService);
   const { user } = useUser();
-  const QUERY_KEY = "ALL_BINS";
-
-  const {
-    isLoading: binsLoading,
-    data,
-    error,
-  } = useQuery<BinData[], Error>({
-    enabled: user !== null,
-    queryKey: [QUERY_KEY, user],
-    queryFn: () => binService.getAllBins(),
-  });
+  const { binLoading, bins, error, loadBin } = useBins();
 
   return (
     user && (
@@ -46,18 +33,22 @@ function AllBinsPage() {
             )}
           </div>
 
-          {binsLoading && (
+          {binLoading && (
             <div className=" grid w-full place-items-center py-12 ">
               <Spinner />
             </div>
           )}
 
-          {!binsLoading && data && data.length > 0 && (
+          {!binLoading && error && <ErrorCard error={error} />}
+
+          {!binLoading && bins && bins.length > 0 && (
             <div className=" grid grid-cols-[repeat(auto-fill,minmax(23rem,1fr))] gap-8 pb-20 ">
               <Mapper
-                list={data}
+                list={bins}
                 id={"all-bins"}
-                component={({ item: bin, index }) => <BinCard bin={bin} />}
+                component={({ item: bin, index }) => (
+                  <BinCard bin={bin} onStatusChange={loadBin} />
+                )}
               />
             </div>
           )}

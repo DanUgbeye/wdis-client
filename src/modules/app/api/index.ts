@@ -1,2 +1,2 @@
 export * from "./app.api";
-export * from "./app.api.types";
+export * from "../app.types";

@@ -16,8 +16,8 @@ export default function Navbar() {
   }
 
   return (
-    <nav className=" flex items-center py-6 text-white sm:h-20 ">
-      <Container className=" flex justify-between gap-x-12 gap-y-4 sm:flex-row ">
+    <nav className=" flex h-20 items-center text-white sm:h-[6rem] ">
+      <div className=" flex w-full flex-row justify-between gap-x-12 gap-y-4 ">
         <div className=" flex items-center gap-x-2 ">
           <HiTrash className=" h-8 w-8 " />
           <h4 className=" text-4xl font-bold ">WDIS</h4>
@@ -34,7 +34,7 @@ export default function Navbar() {
                 <NavLink href={"/bins"} className=" ">
                   Bins
                 </NavLink>
-              
+
                 <NavLink href={"/disposals"} className=" ">
                   Disposals
                 </NavLink>
@@ -57,7 +57,7 @@ export default function Navbar() {
             </Button>
           </div>
         )}
-      </Container>
+      </div>
     </nav>
   );
 }

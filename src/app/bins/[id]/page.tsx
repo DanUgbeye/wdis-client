@@ -114,7 +114,7 @@ function BinDetailsPage() {
     user && (
       <Container>
         <section className=" mb-20 text-white">
-          <div className=" mb-6 flex w-full items-center px-12 py-6 ">
+          <div className=" mb-6 flex w-full items-center px-12 ">
             <h2 className=" w-full py-4 text-3xl font-bold ">BINS DETAILS </h2>
 
             {user.role === USER_ROLES.DISPOSER && data && (

@@ -9,12 +9,14 @@ import useAuth from "../../user/hooks/useAuth.hook";
 export interface BinContextProps {
   binLoading: boolean;
   bins: BinData[];
+  error: Error | null;
   loadBin: () => void;
 }
 
 export const BinContext = React.createContext<BinContextProps>({
   binLoading: false,
   bins: [],
+  error: null,
   loadBin: () => {},
 });
 
@@ -23,15 +25,21 @@ export interface BinContextProviderProps extends PropsWithChildren {}
 export function BinContextProvider(props: BinContextProviderProps) {
   const { auth, loading: authLoading } = useAuth();
   const [bins, setBins] = React.useState<BinData[]>([]);
+  const [error, setError] = React.useState<Error | null>(null);
   const [binLoading, setLoading] = React.useState(true);
 
-  const binApi = new BinAPIService(apiService);
+  const binService = new BinAPIService(apiService);
 
-  const { isLoading, data, error, refetch } = useQuery<BinData[], Error>({
+  const {
+    isLoading,
+    data,
+    error: binsError,
+    refetch,
+  } = useQuery<BinData[], Error>({
     enabled: auth !== null && !authLoading,
-    queryKey: ["GET_ALL_BINS", auth],
-    queryFn: () => binApi.getAllBins(),
-    refetchInterval: 60 * 1000,
+    queryKey: ["ALL_BINS", auth],
+    queryFn: () => binService.getAllBins(),
+    refetchInterval: 3000,
   });
 
   /** fetch bin data from API */
@@ -45,6 +53,9 @@ export function BinContextProvider(props: BinContextProviderProps) {
     const { data, error } = await refetch();
     if (data) {
       setBins(data);
+      setError(null);
+    } else if (error) {
+      setError(error);
     }
 
     setLoading(false);
@@ -61,23 +72,33 @@ export function BinContextProvider(props: BinContextProviderProps) {
   React.useEffect(() => {
     if (data) {
       setBins(data);
+      setError(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
+  /* handle bin state change */
+  React.useEffect(() => {
+    if (binsError) {
+      setError(binsError);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [binsError]);
+
   /* delete any saved bin info once auth details is not available */
   React.useEffect(() => {
-    if (!auth && !authLoading && bins.length > 0) {
+    if (!auth && !authLoading) {
       setBins([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth, authLoading, bins]);
+  }, [auth, authLoading]);
 
   return (
     <BinContext.Provider
       value={{
         binLoading,
         bins,
+        error,
         loadBin,
       }}
     >

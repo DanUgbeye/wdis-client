@@ -73,8 +73,8 @@ export default function BinCard(props: BinCardProps) {
                 className={twMerge(
                   " h-[10rem] w-[10rem] ",
                   bin.status === BIN_STATUS.EMPTY && " text-green-500 ",
-                  bin.status === BIN_STATUS.FULL && " text-red-500 ",
-                  bin.status === BIN_STATUS.IN_DISPOSAL && " text-blue-500 "
+                  bin.status === BIN_STATUS.FULL && " text-red-600 ",
+                  bin.status === BIN_STATUS.IN_DISPOSAL && " text-amber-500 "
                 )}
               />
             </div>
@@ -105,7 +105,7 @@ export default function BinCard(props: BinCardProps) {
                     " -mr-4 w-fit self-end rounded-l-2xl p-3 text-right ",
                     bin.status === BIN_STATUS.EMPTY && " bg-green-500 ",
                     bin.status === BIN_STATUS.FULL && " bg-red-500 ",
-                    bin.status === BIN_STATUS.IN_DISPOSAL && " bg-blue-500 "
+                    bin.status === BIN_STATUS.IN_DISPOSAL && " bg-amber-500 "
                   )}
                 >
                   {bin.status}
@@ -135,7 +135,8 @@ export default function BinCard(props: BinCardProps) {
                   </Button>
                 )}
 
-                {bin.status === BIN_STATUS.EMPTY && (
+                {(bin.status === BIN_STATUS.EMPTY ||
+                  bin.status === BIN_STATUS.FULL) && (
                   <Button
                     disabled={
                       // no reports ||

@@ -1,6 +1,6 @@
 "use client";
 import { ApiService, ApiSuccessResponse, RequestOptions } from "@/modules/api";
-import { AppStats } from "./app.api.types";
+import { AppStats } from "../app.types";
 
 export class AppAPIService {
   constructor(private service: ApiService) {}
@@ -9,7 +9,7 @@ export class AppAPIService {
     try {
       const path = "/app/stats";
 
-      const res = await this.service.axios.post<ApiSuccessResponse<AppStats>>(
+      const res = await this.service.axios.get<ApiSuccessResponse<AppStats>>(
         path,
         options
       );
