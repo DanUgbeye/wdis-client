@@ -1,6 +1,5 @@
 "use client";
 import React, { PropsWithChildren } from "react";
-import { useRouter } from "next/navigation";
 import { UserServerData } from "@/modules/user/user.type";
 import { UserStorage } from "@/modules/user/storage";
 import { LocalStorage } from "@/global-utils/persistent-storage";
@@ -23,7 +22,6 @@ export const UserContext = React.createContext<UserContextProps>({
 export interface UserContextProviderProps extends PropsWithChildren {}
 
 export function UserContextProvider(props: UserContextProviderProps) {
-  const router = useRouter();
   const { auth, loading: authLoading } = useAuth();
   const [user, setUser] = React.useState<UserServerData | null>(null);
   const [loading, setLoading] = React.useState(true);

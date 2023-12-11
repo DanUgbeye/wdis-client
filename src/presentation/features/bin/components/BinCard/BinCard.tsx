@@ -120,7 +120,7 @@ export default function BinCard(props: BinCardProps) {
                       " bg-red-500 "
                   )}
                 >
-                  {bin.status}
+                  {reportCount > 0 ? `${reportCount} report` : bin.status}
                 </div>
 
                 <div className=" flex flex-col gap-1 ">

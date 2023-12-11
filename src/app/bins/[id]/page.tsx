@@ -19,7 +19,6 @@ import WithPrimaryLayout from "@/presentation/layouts/primary-layout/WithPrimary
 import WithOnProtectedRoute from "@/presentation/layouts/protected-route/WithProtectedRoute";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 
@@ -29,7 +28,6 @@ function BinDetailsPage() {
   const { user } = useUser();
   const params = useParams();
   const binId = params.id as string;
-  const router = useRouter();
   const queryClient = useQueryClient();
   const QUERY_KEY = `BIN_${binId}`;
   const QUERY_KEY_2 = `BIN_${binId}-disposals`;
@@ -208,6 +206,7 @@ function BinDetailsPage() {
     )
   );
 }
+
 export default WithOnProtectedRoute(
   WithPrimaryLayout(BinDetailsPage, {
     className:

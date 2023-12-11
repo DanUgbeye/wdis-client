@@ -75,7 +75,7 @@ export default function ReportContextprovider(
   /** connects to the chat websockets server */
   const connectSocket = React.useCallback(() => {
     if (user && auth && socket === null) {
-      console.log("connecting")
+      console.log("connecting");
       // Connect to the Socket.IO server
       const newSocket = io(APP_CONFIG.API_BASE_URL, {
         transports: ["polling"],
@@ -131,7 +131,8 @@ export default function ReportContextprovider(
 
       setSocket(newSocket);
     }
-  }, [user, auth, socket, bins, reports]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, auth, socket, bins]);
 
   /** disconnects from the server */
   const disconnectSocket = React.useCallback(() => {
@@ -145,18 +146,18 @@ export default function ReportContextprovider(
 
   // ===================== EFFECTS ===========================
 
-  // handle disconnecting and connecting in auth change
+  // handle disconnecting and connecting on auth change
   React.useEffect(() => {
     if (!authLoading) {
-      if (auth && !socket) {
         connectSocket();
-      } else if (!auth && socket) {
+        
+       if (!auth && socket && connected) {
         disconnectSocket();
       }
     }
 
     return () => {
-      socket && disconnectSocket();
+      disconnectSocket();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth, authLoading, socket]);

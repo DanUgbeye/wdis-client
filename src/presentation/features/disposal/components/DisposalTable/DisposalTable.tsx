@@ -18,13 +18,17 @@ export default function DisposalTable(props: DisposalTableProps) {
   return (
     user && (
       <table className=" w-full min-w-[60rem] text-lg ">
-        <thead className=" mx-12 h-20 w-full border-b-2 border-white text-lg font-bold ">
-          <th className=" px-4 text-left ">Details</th>
-          <th className=" px-4 text-left ">Time</th>
-          <th className=" w-[10rem] max-w-[10rem] px-4 text-left ">Status</th>
-          {user.role === USER_ROLES.DISPOSER && (
-            <th className=" w-[10rem] max-w-[10rem] px-4 text-left ">Action</th>
-          )}
+        <thead className=" w-full">
+          <tr className=" mx-12 h-20 w-full border-b-2 border-white text-lg font-bold ">
+            <th className=" px-4 text-left ">Details</th>
+            <th className=" px-4 text-left ">Time</th>
+            <th className=" w-[10rem] max-w-[10rem] px-4 text-left ">Status</th>
+            {user.role === USER_ROLES.DISPOSER && (
+              <th className=" w-[10rem] max-w-[10rem] px-4 text-left ">
+                Action
+              </th>
+            )}
+          </tr>
         </thead>
 
         <tbody className=" w-full px-12 ">
