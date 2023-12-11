@@ -5,6 +5,7 @@ import { BinData, NewBin } from "@/modules/bin/bin.types";
 import { USER_ROLES } from "@/modules/user/user.type";
 import Button from "@/presentation/_shared/components/Button";
 import { Container } from "@/presentation/_shared/components/Container";
+import ErrorCard from "@/presentation/_shared/components/ErrorCard";
 import Input from "@/presentation/_shared/components/Input";
 import Spinner from "@/presentation/_shared/components/Spinner";
 import useUser from "@/presentation/features/user/hooks/useUser.hook";
@@ -63,15 +64,7 @@ function EditBinPage() {
           </div>
         )}
 
-        {!binLoading && error && (
-          <div className=" flex h-[10rem] w-full flex-col items-center justify-center rounded-lg bg-white py-12 text-red-500 ">
-            <span className=" text-sm font-semibold uppercase ">
-              An Error Occured
-            </span>
-
-            <span className=" text-xl font-medium ">{error.message}</span>
-          </div>
-        )}
+        {!binLoading && error && <ErrorCard error={error} />}
 
         {!binLoading && !error && data && (
           <div className=" mx-auto mt-12 w-full max-w-lg rounded-lg bg-white px-6 pb-20 pt-12 sm:px-12 ">

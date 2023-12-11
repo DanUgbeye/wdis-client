@@ -32,7 +32,7 @@ export default function DisposalTableRow(props: DisposalTableRowProps) {
       </td>
 
       <td className=" px-4 text-left ">
-        {new Date(disposal.disposedAt).toLocaleTimeString()}
+        {dateUtils.formatTime(new Date(disposal.disposedAt))}
       </td>
 
       <td className=" px-4 text-left ">

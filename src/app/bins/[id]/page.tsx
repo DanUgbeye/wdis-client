@@ -10,6 +10,7 @@ import {
 import { USER_ROLES } from "@/modules/user/user.type";
 import Button from "@/presentation/_shared/components/Button";
 import { Container } from "@/presentation/_shared/components/Container";
+import ErrorCard from "@/presentation/_shared/components/ErrorCard";
 import Spinner from "@/presentation/_shared/components/Spinner";
 import StatsCard from "@/presentation/_shared/components/StatsCard";
 import DisposalTable from "@/presentation/features/disposal/components/DisposalTable";
@@ -113,7 +114,7 @@ function BinDetailsPage() {
     user && (
       <Container>
         <section className=" mb-20 text-white">
-          <div className=" flex w-full items-center px-12 py-6 mb-6 ">
+          <div className=" mb-6 flex w-full items-center px-12 py-6 ">
             <h2 className=" w-full py-4 text-3xl font-bold ">BINS DETAILS </h2>
 
             {user.role === USER_ROLES.DISPOSER && data && (
@@ -135,19 +136,11 @@ function BinDetailsPage() {
             </div>
           )}
 
-          {!binLoading && error && (
-            <div className=" flex h-[10rem] w-full flex-col items-center justify-center rounded-lg bg-white py-12 text-red-500 ">
-              <span className=" text-sm font-semibold uppercase ">
-                An Error Occured
-              </span>
-
-              <span className=" text-xl font-medium ">{error.message}</span>
-            </div>
-          )}
+          {!binLoading && error && <ErrorCard error={error} />}
 
           {!binLoading && data && (
-            <div className=" flex flex-col gap-8 pb-20 ">
-              <div className=" flex w-full items-center justify-center gap-x-20 ">
+            <div className=" flex flex-col gap-y-20 pb-20 ">
+              <div className=" flex w-full flex-wrap items-center justify-center gap-x-20 gap-y-14 ">
                 <div className=" text-5xl font-medium ">{data.location}</div>
 
                 <div className=" w-full max-w-2xl text-2xl font-medium ">
@@ -177,7 +170,9 @@ function BinDetailsPage() {
               </div>
 
               <div className=" w-full  ">
-                <h3 className=" mb-4 text-left text-3xl ">Disposals</h3>
+                <h3 className=" mb-4 border-b-2 border-white py-4 text-left text-3xl">
+                  Disposals
+                </h3>
 
                 {binDisposalLoading && (
                   <div className=" grid w-full place-items-center py-12 ">
@@ -186,28 +181,22 @@ function BinDetailsPage() {
                 )}
 
                 {!binDisposalLoading && binDisposalsError && (
-                  <div className=" flex h-[5rem] w-full flex-col items-center justify-center rounded-lg bg-white py-12 text-red-500 ">
-                    <span className=" text-sm font-semibold uppercase ">
-                      An Error Occured
-                    </span>
-
-                    <span className=" text-xl font-medium ">
-                      {binDisposalsError.message}
-                    </span>
-                  </div>
+                  <ErrorCard error={binDisposalsError} />
                 )}
 
                 {!binDisposalLoading && !binDisposalsError && binDisposals && (
                   <>
                     {binDisposals.length < 1 ? (
-                      <div className=" grid h-16 place-items-center border-t-2 border-white text-xl ">
+                      <div className=" grid h-16 place-items-center text-xl ">
                         No dIsposals for this bin
                       </div>
                     ) : (
-                      <DisposalTable
-                        disposals={binDisposals}
-                        onDelete={handleDeleteDisposal}
-                      />
+                      <div className=" w-full overflow-x-auto ">
+                        <DisposalTable
+                          disposals={binDisposals}
+                          onDelete={handleDeleteDisposal}
+                        />
+                      </div>
                     )}
                   </>
                 )}

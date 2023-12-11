@@ -15,6 +15,17 @@ export class DateUtils {
     return `${day}${suffix} ${formattedDate}`;
   }
 
+  formatTime(inputDate: Date): string {
+    const options: Intl.DateTimeFormatOptions = {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+
+    const formatter = new Intl.DateTimeFormat("en-US", options);
+    return formatter.format(inputDate);
+  }
+
   getDaySuffix(day: number): string {
     if (day >= 11 && day <= 13) {
       return "th";
