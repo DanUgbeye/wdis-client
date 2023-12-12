@@ -13,28 +13,31 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import Button from "@/presentation/_shared/components/Button";
 import useReport from "@/presentation/features/report/hooks/useReport.hook";
+import { observer } from "mobx-react-lite";
+import reportStore from "@/modules/reports/store/report.store";
 
 export interface BinCardProps {
   bin: BinData;
   onStatusChange?: (bin: BinData) => void;
 }
 
-export default function BinCard(props: BinCardProps) {
+function BinCard(props: BinCardProps) {
   const binService = new BinAPIService(apiService);
-  const reportService = useReport();
+  const { markBinAsEmpty, markBinAsInDisposal, reportBin } = useReport();
   const { bin, onStatusChange } = props;
   const { user } = useUser();
   const queryClient = useQueryClient();
   const QUERY_KEY = `BIN_${bin._id}`;
 
-  const reportCount = reportService.getReportsForBin(bin._id);
+  const reportCount = reportStore.getReportsForBin(bin._id);
+
   const [binStatusLoading, setBinStatusLoading] = React.useState(false);
 
   async function handleMarkBinAsEmpty(bin: BinData) {
     setBinStatusLoading(true);
     try {
       await binService.markBinAsEmpty(bin._id);
-      reportService.markBinAsEmpty(bin._id);
+      markBinAsEmpty(bin._id);
     } catch (error: any) {
       setBinStatusLoading(false);
       return toast.error(error.message, {
@@ -51,7 +54,7 @@ export default function BinCard(props: BinCardProps) {
     setBinStatusLoading(true);
     try {
       await binService.markBinAsInDisposal(bin._id);
-      reportService.markBinAsInDisposal(bin._id);
+      markBinAsInDisposal(bin._id);
     } catch (error: any) {
       setBinStatusLoading(false);
       return toast.error(error.message, {
@@ -68,8 +71,10 @@ export default function BinCard(props: BinCardProps) {
 
   function handleReportBinASFull(bin: BinData) {
     setBinStatusLoading(true);
-    const status = reportService.reportBin(bin._id);
-    status ? toast.success("report sent") : toast.error("failed to send");
+    const status = reportBin(bin._id);
+    status
+      ? toast.success("report sent", { toastId: "report-bin" })
+      : toast.error("failed to send", { toastId: "report-bin" });
     setBinStatusLoading(false);
   }
 
@@ -198,3 +203,5 @@ export default function BinCard(props: BinCardProps) {
     )
   );
 }
+
+export default observer(BinCard);

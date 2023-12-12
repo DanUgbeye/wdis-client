@@ -27,7 +27,7 @@ export default function UserDashboard() {
           </div>
         )}
 
-        {!binLoading && error && <ErrorCard error={error} />}
+        {!binLoading && !bins && error && <ErrorCard error={error} />}
 
         {!binLoading && bins && (
           <div className=" grid grid-cols-[repeat(auto-fill,minmax(23rem,1fr))] gap-8 ">
